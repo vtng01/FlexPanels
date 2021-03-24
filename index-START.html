@@ -26,6 +26,7 @@
     .panels {
       min-height: 100vh;
       overflow: hidden;
+      display: flex;
     }
 
     .panel {
@@ -43,6 +44,12 @@
       font-size: 20px;
       background-size: cover;
       background-position: center;
+      flex: 1;       /*distribute the spaces automatically, the vertical strips*/
+      justify-content: center;
+      align-items: center;
+      display: flex;                   /*add this flexing property to class*/
+      flex-direction: column;          /*flex the boxes vertically because default flex is horizontal*/
+
     }
 
     .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
@@ -51,12 +58,23 @@
     .panel4 { background-image:url(https://source.unsplash.com/ITjiVXcwVng/1500x1500); }
     .panel5 { background-image:url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500); }
 
-    /* Flex Children */
+    /* Flex Children/ITEMS */
     .panel > * {
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+      /*border: 1px solid red;*/
+      flex: 1 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
+
+    /*now i want to hide the top and bottom boxes*/
+    .panel > *:first-child{transform: translateY(-100%);}
+    .panel.open-active > *:first-child{transform: translateY(0%);}
+    .panel > *:last-child{transform: translateY(100%);}
+    .panel.open-active > *:last-child{transform: translateY(0%);}
 
     .panel p {
       text-transform: uppercase;
@@ -70,6 +88,7 @@
     }
 
     .panel.open {
+      flex: 5;     /*takes 5 times more room than the rest*/
       font-size: 40px;
     }
 
@@ -81,6 +100,7 @@
       <p>Hey</p>
       <p>Let's</p>
       <p>Dance</p>
+      
     </div>
     <div class="panel panel2">
       <p>Give</p>
@@ -91,6 +111,7 @@
       <p>Experience</p>
       <p>It</p>
       <p>Today</p>
+      
     </div>
     <div class="panel panel4">
       <p>Give</p>
@@ -105,6 +126,22 @@
   </div>
 
   <script>
+    const panels = document.querySelectorAll('.panel'); //selects all tags of class panel
+    // this function adds 'open' to the name of the existing class, observe key word classList, toggle
+    function toggleOpen(){
+      this.classList.toggle('open');
+    }
+    
+    function toggleActive(e){
+      console.log(e.propertyName);
+      if(e.propertyName.includes('flex')) {
+        this.classList.toggle('open-active');
+      }
+    }
+
+    panels.forEach(panel => panel.addEventListener('click', toggleOpen));
+    panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
+
 
   </script>
 
